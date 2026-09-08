@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: employee-frontend
+  labels:
+    app: employee-frontend
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: employee-frontend
+
+  template:
+    metadata:
+      labels:
+        app: employee-frontend
+
+    spec:
+      containers:
+        - name: employee-frontend
+          image: acrjavaaks2026.azurecr.io/employee-frontend:1.0
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 80
