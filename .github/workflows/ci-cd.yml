@@ -81,7 +81,20 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build backend Docker image
-        run: docker build -t employee-backend:1.0.0 ./backend
+        run: docker build -t acrjavaaks2026.azurecr.io/employee-backend:1.0.0 ./backend
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Login to ACR
+        run: az acr login --name acrjavaaks2026
+
+      - name: Push backend image
+        run: docker push acrjavaaks2026.azurecr.io/employee-backend:1.0.0
 
 
   frontend-docker:
@@ -93,4 +106,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build frontend Docker image
-        run: docker build -t employee-frontend:1.0.0 ./frontend
+        run: docker build -t acrjavaaks2026.azurecr.io/employee-frontend:1.0.0 ./frontend
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Login to ACR
+        run: az acr login --name acrjavaaks2026
+
+      - name: Push frontend image
+        run: docker push acrjavaaks2026.azurecr.io/employee-frontend:1.0.0
