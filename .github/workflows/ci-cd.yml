@@ -120,3 +120,33 @@ jobs:
 
       - name: Push frontend image
         run: docker push acrjavaaks2026.azurecr.io/employee-frontend:1.0.0
+
+
+  aks-auth:
+    runs-on: ubuntu-latest
+    needs:
+      - backend-docker
+      - frontend-docker
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Set AKS context
+        uses: azure/aks-set-context@v5
+        with:
+          resource-group: rg-java-aks
+          cluster-name: aks-java-app
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Verify AKS connection
+        run: kubectl get nodes
