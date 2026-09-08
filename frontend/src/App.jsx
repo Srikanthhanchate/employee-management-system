@@ -17,10 +17,6 @@ function App() {
     const [editingEmployee, setEditingEmployee] = useState(null);
     const [showAddForm, setShowAddForm] = useState(false);
 
-    useEffect(() => {
-        loadEmployees();
-    }, []);
-
     const loadEmployees = async () => {
         try {
             const data = await getEmployees();
@@ -29,6 +25,12 @@ function App() {
             alert(error.message);
         }
     };
+
+    // Load employees when the application starts.
+    // The API call updates React state asynchronously.
+    useEffect(() => {
+        loadEmployees(); // eslint-disable-line react-hooks/set-state-in-effect
+    }, []);
 
     const handleAddEmployee = async (employee) => {
         await createEmployee(employee);
@@ -39,6 +41,7 @@ function App() {
     const handleUpdateEmployee = async (id, employee) => {
         await updateEmployee(id, employee);
         await loadEmployees();
+        setEditingEmployee(null);
     };
 
     const handleDeleteEmployee = async (id) => {
@@ -79,6 +82,7 @@ function App() {
             <aside className="sidebar">
                 <div className="logo">
                     <div className="logo-icon">EM</div>
+
                     <div>
                         <h2>Employee</h2>
                         <span>Management</span>
@@ -106,10 +110,15 @@ function App() {
             {/* Main Content */}
             <main className="main-content">
 
+                {/* Header */}
                 <header className="topbar">
                     <div>
-                        <p className="breadcrumb">Dashboard / Employees</p>
+                        <p className="breadcrumb">
+                            Dashboard / Employees
+                        </p>
+
                         <h1>Employee Management</h1>
+
                         <p className="subtitle">
                             Manage your team members and employee records.
                         </p>
@@ -129,6 +138,7 @@ function App() {
 
                     <div className="stat-card">
                         <div className="stat-icon">👥</div>
+
                         <div>
                             <p>Total Employees</p>
                             <h2>{employees.length}</h2>
@@ -137,8 +147,10 @@ function App() {
 
                     <div className="stat-card">
                         <div className="stat-icon">💻</div>
+
                         <div>
                             <p>Departments</p>
+
                             <h2>
                                 {
                                     new Set(
@@ -154,15 +166,18 @@ function App() {
 
                     <div className="stat-card">
                         <div className="stat-icon">✓</div>
+
                         <div>
                             <p>System Status</p>
-                            <h2 className="online">Active</h2>
+                            <h2 className="online">
+                                Active
+                            </h2>
                         </div>
                     </div>
 
                 </section>
 
-                {/* Add Form */}
+                {/* Add Employee Form */}
                 {showAddForm && (
                     <div className="form-card">
                         <EmployeeForm
@@ -171,7 +186,7 @@ function App() {
                     </div>
                 )}
 
-                {/* Edit Form */}
+                {/* Edit Employee Form */}
                 {editingEmployee && (
                     <div className="form-card">
                         <EditEmployee
@@ -184,15 +199,21 @@ function App() {
 
                 {/* Employee Table */}
                 <section className="employee-card">
+
                     <div className="card-header">
+
                         <div>
                             <h2>Employees</h2>
-                            <p>All registered employees</p>
+
+                            <p>
+                                All registered employees
+                            </p>
                         </div>
 
                         <span className="employee-count">
                             {employees.length} Records
                         </span>
+
                     </div>
 
                     <EmployeeList
@@ -201,6 +222,7 @@ function App() {
                         onDelete={handleDeleteEmployee}
                         onView={handleViewEmployee}
                     />
+
                 </section>
 
             </main>
