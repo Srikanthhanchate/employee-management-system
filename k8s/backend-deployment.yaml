@@ -16,8 +16,11 @@ spec:
     metadata:
       labels:
         app: employee-backend
+        azure.workload.identity/use: "true"
 
     spec:
+      serviceAccountName: employee-backend-sa
+
       containers:
         - name: employee-backend
           image: acrjavaaks2026.azurecr.io/employee-backend:1.0.0
