@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: employee-backend
-          image: acrjavaaks2026.azurecr.io/employee-backend:1.0
+          image: acrjavaaks2026.azurecr.io/employee-backend:1.0.0
           imagePullPolicy: Always
 
           ports:
